@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stakelius – Coming Soon</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-white flex flex-col items-center justify-center min-h-screen px-4">
+  
+  <!-- Logo / Brand -->
+  <div class="text-center mb-8">
+    <h1 class="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-indigo-400 to-emerald-400 bg-clip-text text-transparent">
+      Stakelius
+    </h1>
+    <p class="mt-2 text-slate-400 text-lg">Launching Soon</p>
+    <p class="mt-1 text-slate-300 text-md italic">One Platform. All your staking.</p>
+  </div>
+
+  <!-- YouTube Demo Embed -->
+  <div class="w-full max-w-2xl aspect-video mb-8 rounded-xl overflow-hidden shadow-lg">
+    <iframe class="w-full h-full" 
+            src="YOUR_YOUTUBE_DEMO_LINK_HERE" 
+            title="Stakelius Demo" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
+    </iframe>
+  </div>
+
+  <!-- Waitlist Form -->
+  <div class="w-full max-w-md bg-slate-900 p-6 rounded-xl shadow-lg text-center">
+    <h2 class="text-2xl font-semibold mb-4">Join Waitlist for Early Access</h2>
+    <form class="flex flex-col sm:flex-row gap-3">
+      <input type="email" placeholder="Enter your email"
+             class="flex-1 px-4 py-3 rounded-lg bg-slate-800 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+      <button type="submit"
+              class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 rounded-lg font-semibold transition">
+        Join
+      </button>
+    </form>
+    <p class="text-sm text-slate-500 mt-3">Be the first to get early access.</p>
+  </div>
+
+  <!-- Footer -->
+  <footer class="mt-12 text-slate-600 text-sm">
+    © <span id="year"></span> Stakelius. All rights reserved.
+  </footer>
+
+  <script>
+    // auto year
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
