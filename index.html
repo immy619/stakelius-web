@@ -6,7 +6,6 @@
   <title>Stakelius – Coming Soon</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* Particle + shapes background */
     canvas#background {
       position: fixed;
       top: 0;
@@ -16,7 +15,6 @@
       z-index: -1;
     }
 
-    /* Gradient animation for title */
     @keyframes gradient-slide {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
@@ -28,14 +26,12 @@
       animation: gradient-slide 10s ease infinite;
     }
 
-    /* Glow hover effect */
     .glow:hover {
       box-shadow: 0 0 20px rgba(16, 185, 129, 0.7), 0 0 30px rgba(16, 185, 129, 0.5);
       transform: scale(1.05);
       transition: all 0.3s ease-in-out;
     }
 
-    /* Fade-in animation */
     .fade-in {
       opacity: 0;
       animation: fadeIn 1s forwards;
@@ -51,10 +47,8 @@
 </head>
 <body class="bg-slate-950 text-white flex flex-col items-center justify-center min-h-screen px-4 overflow-hidden">
 
-  <!-- Animated Background -->
   <canvas id="background"></canvas>
 
-  <!-- Logo / Brand -->
   <div class="text-center mb-12 fade-in delay-1">
     <img src="Stakelius_Logo.png" alt="Stakelius Logo" class="mx-auto w-32 md:w-48 mb-4">
     <h1 class="text-4xl md:text-6xl font-extrabold bg-clip-text text-transparent animated-gradient">
@@ -64,7 +58,6 @@
     <p class="mt-1 text-slate-300 text-md italic">One Platform. All your staking.</p>
   </div>
 
-  <!-- Waitlist / Demo Buttons -->
   <div class="w-full max-w-md bg-slate-900 p-8 rounded-2xl shadow-xl text-center fade-in delay-2">
     <h2 class="text-2xl font-semibold mb-4">Join the Waitlist</h2>
     <p class="text-slate-400 mb-6">Sign-ups are not open yet. Stay tuned for early access.</p>
@@ -72,22 +65,19 @@
             class="w-full px-6 py-3 bg-slate-700 text-slate-400 rounded-lg font-semibold cursor-not-allowed mb-4">
       Waitlist (Coming Soon)
     </button>
-    <a href="#demo" 
+    <a href="https://demo.stakelius.com" target="_blank"
        class="w-full inline-block px-6 py-3 bg-gradient-to-r from-indigo-500 via-green-400 to-teal-400 text-white font-semibold rounded-lg glow transition-all">
       View Demo
     </a>
   </div>
 
-  <!-- Footer -->
   <footer class="mt-12 text-slate-600 text-sm fade-in delay-3">
     © <span id="year"></span> Stakelius. All rights reserved.
   </footer>
 
   <script>
-    // Auto year
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // Canvas Background with Particles, Lines, and Parallax
     const canvas = document.getElementById('background');
     const ctx = canvas.getContext('2d');
     let particles = [];
@@ -115,7 +105,6 @@
     function drawParticles() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Draw particles
       particles.forEach(p => {
         ctx.beginPath();
         ctx.arc(p.x + p.offsetX, p.y + p.offsetY, p.size, 0, Math.PI * 2);
@@ -123,7 +112,6 @@
         ctx.fill();
       });
 
-      // Draw connecting lines
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = (particles[i].x + particles[i].offsetX) - (particles[j].x + particles[j].offsetX);
@@ -140,18 +128,14 @@
         }
       }
 
-      // Move particles
       particles.forEach(p => {
         p.x += p.baseSpeedX;
         p.y += p.baseSpeedY;
-
-        // Wrap edges
         if (p.x < 0) p.x = canvas.width;
         if (p.x > canvas.width) p.x = 0;
         if (p.y < 0) p.y = canvas.height;
         if (p.y > canvas.height) p.y = 0;
 
-        // Parallax effect
         if(mouse.x !== null && mouse.y !== null){
           const offsetFactor = 0.02;
           p.offsetX += (mouse.x - canvas.width/2 - p.offsetX) * offsetFactor;
