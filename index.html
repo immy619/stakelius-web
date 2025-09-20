@@ -6,7 +6,17 @@
   <title>Stakelius – Coming Soon</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* Gradient animation */
+    /* Particle + shapes background */
+    canvas#background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    /* Gradient animation for title */
     @keyframes gradient-slide {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
@@ -18,7 +28,7 @@
       animation: gradient-slide 10s ease infinite;
     }
 
-    /* Button hover glow */
+    /* Glow hover effect */
     .glow:hover {
       box-shadow: 0 0 20px rgba(16, 185, 129, 0.7), 0 0 30px rgba(16, 185, 129, 0.5);
       transform: scale(1.05);
@@ -41,9 +51,12 @@
 </head>
 <body class="bg-slate-950 text-white flex flex-col items-center justify-center min-h-screen px-4 overflow-hidden">
 
+  <!-- Animated Background -->
+  <canvas id="background"></canvas>
+
   <!-- Logo / Brand -->
   <div class="text-center mb-12 fade-in delay-1">
-    <img src="Stakelius_Logo.png" alt="Stakelius Logo" class="mx-auto w-32 md:w-48 mb-4 animate-bounce">
+    <img src="Stakelius_Logo.png" alt="Stakelius Logo" class="mx-auto w-32 md:w-48 mb-4">
     <h1 class="text-4xl md:text-6xl font-extrabold bg-clip-text text-transparent animated-gradient">
       Stakelius
     </h1>
@@ -71,8 +84,92 @@
   </footer>
 
   <script>
-    // auto year
+    // Auto year
     document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Canvas Background with Particles, Lines, and Parallax
+    const canvas = document.getElementById('background');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let mouse = { x: null, y: null };
+
+    function initBackground() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      particles = [];
+      const numParticles = Math.floor((canvas.width * canvas.height) / 8000);
+
+      for (let i = 0; i < numParticles; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          size: Math.random() * 3 + 1,
+          baseSpeedX: (Math.random() - 0.5) * 0.5,
+          baseSpeedY: (Math.random() - 0.5) * 0.5,
+          offsetX: 0,
+          offsetY: 0
+        });
+      }
+    }
+
+    function drawParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw particles
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x + p.offsetX, p.y + p.offsetY, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(16,185,129,0.7)';
+        ctx.fill();
+      });
+
+      // Draw connecting lines
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = (particles[i].x + particles[i].offsetX) - (particles[j].x + particles[j].offsetX);
+          const dy = (particles[i].y + particles[i].offsetY) - (particles[j].y + particles[j].offsetY);
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < 120) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(16,185,129,${1 - distance/120})`;
+            ctx.lineWidth = 1;
+            ctx.moveTo(particles[i].x + particles[i].offsetX, particles[i].y + particles[i].offsetY);
+            ctx.lineTo(particles[j].x + particles[j].offsetX, particles[j].y + particles[j].offsetY);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Move particles
+      particles.forEach(p => {
+        p.x += p.baseSpeedX;
+        p.y += p.baseSpeedY;
+
+        // Wrap edges
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+
+        // Parallax effect
+        if(mouse.x !== null && mouse.y !== null){
+          const offsetFactor = 0.02;
+          p.offsetX += (mouse.x - canvas.width/2 - p.offsetX) * offsetFactor;
+          p.offsetY += (mouse.y - canvas.height/2 - p.offsetY) * offsetFactor;
+        }
+      });
+
+      requestAnimationFrame(drawParticles);
+    }
+
+    window.addEventListener('resize', initBackground);
+    window.addEventListener('mousemove', e => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
+    initBackground();
+    drawParticles();
   </script>
 
 </body>
